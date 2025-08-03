@@ -152,8 +152,8 @@ table tr:not(:first-child) td{
                 calcScreen.textContent+=inpt
         }
         calcScreen.textContent= calcScreen.textContent
-        .replace(/\D{2,}|\/\//g, n=>n.match(/\w$/))
-        .replace(/^(X|\=|\+|\/|0{2,})/g, n=>n)
+        .replace(/(?<cha>\D){2,}/,"$<cha>")
+        //.replace(/^(X|\=|\+|\/|0{2,})/g, n=>n)
         .replace(/\.00$/g, '')
         .replace('null','')
        
