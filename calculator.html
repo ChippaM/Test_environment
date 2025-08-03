@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<style type="text/css"> 
+
+table{
+    background-color:black;
+    color:#fff;
+    font-size: 1.3em;
+    max-width: 200px;
+    font-family: arial , sans-seril;
+    border-radius: 10px;
+    margin:0 auto;
+    padding:10px;
+    
+}
+table::before {
+content:'History';
+width:50px;
+aspect-ratio: 1;
+color:#fff;
+top:0;
+left:0;
+
+}
+table tr:not(:first-child) td{
+    margin-right:10px;
+    user-select: none;
+}
+table tr:not(:first-child) td{
+
+    padding: 1.3em;
+    clip-path: circle();
+    text-align: center;
+}
+ table tr:first-child{
+    max-width: 300px;
+    min-height: 150px;
+    height:10vw;
+    border-radius:5px;
+    text-align: right;
+    font-weight: 200;
+    margin:0 5px;
+    padding:10px;
+    font-size: 2em;
+    overflow-x: hidden;
+
+ }
+ table tr:first-child td{
+    max-width:200px;
+   word-break: break-all;
+ }
+
+ table tr td:not(:last-child){
+    
+  background-color: #3e3d3d;
+    color:#fff;
+ }
+ table tr td:last-child:not(:first-child){
+    background-color:rgb(241, 160, 9)
+ }
+
+
+</style>
+</head>
+<body>
+    
+    <table>
+        <tr><td colspan="4"></td></tr>
+        <tr>
+            <td>C</td>
+            <td><sup>+</sup>/<sub>-</sub></td>
+            <td>%</td>
+            <td>/</td>
+        
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>8</td>
+            <td>9</td>
+            <td>X</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>+</td>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>,</td>
+            <td>&#8592;</td>
+            <td>=</td>
+
+        </tr>
+    </table>
+
+    <script>
+
+    const tb = document.getElementsByTagName("table")[0]
+    tb.onclick = getPressedKey
+    function getPressedKey(event) {
+        const curTarget = event.target
+        let calcScreen = document.querySelector('tr:first-child td')
+       const isNotScreen =curTarget.outerHTML.match(/colspan/gi)?true:false
+      
+        if (curTarget.tagName !== "TD" || isNotScreen ) return 
+    
+        let inpt = curTarget.textContent
+        
+
+        switch(inpt){
+            case "C": calcScreen.textContent = '';
+            break;
+            case "=":
+                if (!/\D$/.test(calcScreen.textContent)) {
+                   
+                    const calc = eval(calcScreen.textContent.replace('X','*'))
+                    calcScreen.textContent = calc.toFixed(2)
+                }
+
+            break
+            case '%':
+                 calcScreen.textContent = String(eval(calcScreen.textContent/100))
+                 break
+            case '←':
+                const len = calcScreen.textContent.length
+                 calcScreen.textContent = calcScreen.textContent.slice(0,len-1)
+        
+                 break;
+            case '+/-':
+                    if(/^\-/.test(calcScreen.textContent))
+
+                    calcScreen.textContent = calcScreen.textContent.replace('-',"")
+                    else 
+                    calcScreen.textContent = calcScreen.textContent.replace(/(\d+)/,"-$&")
+
+
+                break;
+         
+             
+            default:
+                calcScreen.textContent+=inpt
+        }
+        calcScreen.textContent= calcScreen.textContent
+        .replace(/\D{2,}|\/\//g, n=>n.match(/\w$/))
+        .replace(/^(X|\=|\+|\/|0{2,})/g, n=>n)
+        .replace(/\.00$/g, '')
+        .replace('null','')
+       
+
+    }
+
+    </script>
+</body>
+</html>
